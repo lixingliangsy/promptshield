@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://promptshield.com/sitemap.xml
