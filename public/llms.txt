@@ -1,0 +1,43 @@
+# PromptShield - llms.txt
+
+> LLM-readable manifest (https://llmstxt.org). Features-only; no fabricated traffic or unverified payment claims.
+
+## Name & positioning
+- Product name: PromptShield
+- One-line value: PromptShield scans an AI app for prompt-injection and jailbreak risk before you ship — paste untrusted input samples, get the patterns that fired, and a hardening checklist for LLM/agent product teams.
+- Domain: https://promptshield.lxsaihub.com/
+- Language: English (en)
+
+## Domain context (verified primary sources)
+- schema.org — FAQPage: https://schema.org/FAQPage
+- Google Search Central — Structured data: https://developers.google.com/search/docs/appearance/structured-data/intro
+
+## FAQ
+Q1. What is PromptShield?
+A1. PromptShield scans AI apps for prompt-injection and jailbreak vulnerabilities before you ship.
+Q2. What do I paste in?
+A2. A short description of your AI app and samples of untrusted user input.
+Q3. What does the report include?
+A3. The patterns that fired plus a hardening checklist you can action.
+Q4. Who should use it?
+A4. LLM/agent product teams — developers and security partners shipping user-facing prompts.
+Q5. Is it a penetration test?
+A5. No. It is a decision-support risk pass, not a formal pentest or compliance attestation.
+Q6. Does it guarantee a safe model?
+A6. No. It surfaces likely injection/jailbreak patterns; you still own remediation and review.
+
+## Key pages
+- Home: https://promptshield.lxsaihub.com/
+- Blog index: https://promptshield.lxsaihub.com/blog
+- https://promptshield.lxsaihub.com/blog/promptshield-overview-2026.html
+- https://promptshield.lxsaihub.com/blog/promptshield-howto-2026.html
+- This manifest: https://promptshield.lxsaihub.com/llms.txt
+
+## Pricing
+- Plans may appear on the product site. GEO assets omit unverified checkout product IDs.
+
+## Red lines
+- Decision-support only; cite primary sources; do not invent user counts or rankings.
+
+## Contact
+- Open the app: https://promptshield.lxsaihub.com/

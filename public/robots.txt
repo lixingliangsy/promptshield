@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# LLM / AI answer-engine indexing
+LLM-Content: https://promptshield.lxsaihub.com/llms.txt
+
+Sitemap: https://promptshield.lxsaihub.com/sitemap.xml

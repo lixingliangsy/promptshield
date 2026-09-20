@@ -1,0 +1,163 @@
+import React from 'react'
+import Head from 'next/head'
+import { buildFaqJsonLd, buildHowToJsonLd } from '../lib/schema'
+import Layout from '../components/Layout'
+import { PRODUCT } from '../lib/product'
+import { geoPosts } from '../data/geoPosts'
+
+const OWASP_LLM = 'https://owasp.org/www-project-top-10-for-large-language-model-applications/'
+const ARXIV_INJECTION = 'https://arxiv.org/abs/2306.05499'
+const OWASP = 'https://owasp.org/'
+
+const posts = [
+  {
+    slug: 'what-is-prompt-injection',
+    title: 'What is prompt injection? (LLM01 in the OWASP Top 10 for LLM Apps)',
+    type: 'Definitional · FAQPage',
+    query: 'what is prompt injection',
+    body: 'Prompt injection is an attack where untrusted user input hijacks a model\'s instructions — making it ignore its system prompt and do something unintended, like leaking data, calling a tool it shouldn\'t, or exfiltrating context. OWASP lists it as LL01 in the Top 10 for Large Language Model Applications. PromptShield scans your app\'s input for the exact patterns that fire.',
+    refs: [OWASP_LLM, ARXIV_INJECTION],
+  },
+  {
+    slug: 'why-llm-apps-are-injection-prone',
+    title: 'Why LLM apps are injection-prone (and the real failure modes)',
+    type: 'Definitional + examples',
+    query: 'why are llm apps vulnerable to prompt injection',
+    body: 'An LLM app blends trusted instructions (your system prompt) with untrusted input (the user) in the same context window. The model can\'t reliably tell them apart. The failure modes are concrete: instruction override, system-prompt exfiltration, tool abuse, and data theft. PromptShield flags the patterns before they reach production.',
+    refs: [OWASP_LLM, ARXIV_INJECTION],
+  },
+  {
+    slug: 'how-to-scan-for-prompt-injection',
+    title: 'How to scan your AI app for prompt injection before shipping',
+    type: 'How-to · HowTo',
+    query: 'how to prevent prompt injection',
+    body: 'Describe your AI app and paste a sample of untrusted user input; PromptShield returns an injection-risk report with the exact patterns that fired and a hardening checklist. For continuous coverage, run it on every deploy as a CI gate (Pro). Scanning before ship turns an invisible risk into a visible, fixable one.',
+    refs: [OWASP_LLM, OWASP],
+  },
+  {
+    slug: 'prompt-injection-vs-jailbreak',
+    title: 'Prompt injection vs jailbreak: what\'s the difference?',
+    type: 'Definitional + examples',
+    query: 'prompt injection vs jailbreak',
+    body: 'Injection arrives through untrusted input at runtime — a user message that hijacks the app. A jailbreak is a deliberate attempt to bypass the model\'s safety behavior ("you are now DAN"). Both are adversarial; PromptShield scans for injection patterns in your app\'s real input, and flags jailbreak signals too.',
+    refs: [OWASP_LLM, ARXIV_INJECTION],
+  },
+  {
+    slug: 'llm-hardening-checklist',
+    title: 'LLM app hardening checklist (pre-ship)',
+    type: 'How-to · HowTo',
+    query: 'llm security hardening checklist',
+    body: 'Before you ship a customer-facing LLM: validate/escape user input at the boundary, keep the system prompt out of model-returnable context, add an injection classifier before tool calls, and default-deny tool access. PromptShield\'s report gives you this checklist per scan.',
+    refs: [OWASP_LLM, OWASP],
+  },
+]
+
+const faqs = [
+  {
+    "question": "What is prompt injection?",
+    "answer": "An attack where untrusted user input hijacks the model's instructions, making it ignore its system prompt and do something unintended — leak data, call a tool it shouldn't, or exfiltrate context. OWASP lists it as LL01 in the Top 10 for LLM Applications."
+  },
+  {
+    "question": "Is prompt injection the same as a jailbreak?",
+    "acceptedAnswer": "Related but different: injection comes through untrusted input at runtime; a jailbreak deliberately tries to bypass the model's safety behavior. Both are adversarial; PromptShield scans for injection patterns in your app's input and flags jailbreak signals."
+  },
+  {
+    "question": "Can PromptShield guarantee my app is secure?",
+    "acceptedAnswer": "No. PromptShield is a decision-support scanner that flags known injection/jailbreak patterns and gives a hardening checklist. It reduces obvious risks but does not make an app unhackable or replace a security team."
+  },
+  {
+    "question": "Should I scan before every deploy?",
+    "acceptedAnswer": "Scanning on every deploy (a CI gate) catches new patterns as your app changes. PromptShield's Pro tier supports CI-ready scanning so the check runs automatically."
+  },
+  {
+    "question": "Does the OWASP LLM Top 10 apply to my app?",
+    "acceptedAnswer": "If your app accepts untrusted user input and calls tools or reads data, LL01 (Prompt Injection) is directly relevant. The Top 10 is a risk catalog, not a compliance certificate — use it to prioritize, not to claim conformance."
+  }
+] as { question: string; answer: string }[]
+
+const howToBlocks = [
+  {
+    "name": "How to scan your AI app for prompt injection before shipping",
+    "steps": [
+      {
+        "name": "Overview",
+        "text": "Describe your AI app and paste a sample of untrusted user input; PromptShield returns an injection-risk report with the exact patterns that fired and a hardening checklist. For continuous coverage, run it on every deploy as a CI gate (Pro)."
+      }
+    ]
+  },
+  {
+    "name": "LLM app hardening checklist (pre-ship)",
+    "steps": [
+      {
+        "name": "Overview",
+        "text": "Before you ship a customer-facing LLM: validate/escape user input at the boundary, keep the system prompt out of model-returnable context, add an injection classifier before tool calls, and default-deny tool access. PromptShield's report gives you this checklist per scan."
+      }
+    ]
+  },
+  {
+    "name": "Prompt injection vs jailbreak: what's the difference?",
+    "steps": [
+      {
+        "name": "Overview",
+        "text": "Injection arrives through untrusted input at runtime; a jailbreak deliberately bypasses the model's safety behavior. Both are adversarial. PromptShield scans for injection patterns in your app's real input and flags jailbreak signals."
+      }
+    ]
+  }
+] as { name: string; steps: { name: string; text: string }[] }[]
+
+export default function BlogPage() {
+  return (
+    <Layout>
+      <Head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(buildFaqJsonLd(faqs)) }}
+        />
+        {howToBlocks.map((block, i) => (
+          <script
+            key={`howto-${i}`}
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(buildHowToJsonLd(block.name, block.steps)),
+            }}
+          />
+        ))}
+
+        <title>{`${PRODUCT.name} — Blog`}</title>
+        <meta name="description" content="Definitional and how-to posts on prompt injection, LLM app hardening, the OWASP Top 10 for LLM Applications, and pre-ship scanning — the questions LLM/agent teams ask before they ship customer-facing AI." />
+      </Head>
+      <div className="max-w-3xl">
+        <div className="text-xs font-bold tracking-widest uppercase text-indigo-600 mb-3">Blog · GEO</div>
+        <h1 className="text-4xl font-extrabold tracking-tight mb-4">Shipping LLM apps safely, explained</h1>
+        <p className="text-lg text-slate-600 mb-10">Own the definitional queries LLM/agent teams ask before they ship customer-facing AI that accepts untrusted input.</p>
+
+        <div className="space-y-8">
+          {posts.map((p) => (
+            <article key={p.slug} className="border-b border-slate-200 pb-8">
+              <div className="text-xs font-semibold text-indigo-600 mb-1">{p.type}</div>
+              <h2 className="text-2xl font-bold mb-2 text-slate-900">{p.title}</h2>
+              <p className="text-sm text-slate-600 mb-2"><span className="font-semibold">Target query:</span> {p.query}</p>
+              <p className="text-slate-700 leading-relaxed">{p.body}</p>
+              <p className="text-xs text-slate-400 mt-3">refs: {p.refs.join(' · ')}</p>
+            </article>
+          ))}
+        </div>
+
+        <h2 className="text-2xl font-bold mt-14 mb-2 text-slate-900">Deep-dives (GEO)</h2>
+        <p className="text-sm text-slate-500 mb-6">Long-form, cited explainers. Each carries OWASP LLM Top 10 (2025) + prompt-injection research references and an honesty disclaimer.</p>
+        <div className="space-y-5">
+          {geoPosts.map((p) => (
+            <div key={p.slug} className="border-b border-slate-200 pb-5">
+              <h3 className="text-xl font-semibold">
+                <a href={`/blog/${p.slug}`} className="text-indigo-700 hover:underline">{p.title}</a>
+              </h3>
+              <p className="text-sm text-slate-600 mt-1">{p.description}</p>
+            </div>
+          ))}
+        </div>
+
+        <p className="text-xs text-slate-400 mt-8">Publish + syndicate per gtm-launch (IH + GEO indexes). Each post carries authoritative refs.</p>
+      </div>
+    </Layout>
+  )
+}
